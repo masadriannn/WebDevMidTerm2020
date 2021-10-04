@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Latihan UTS</title>
+
+    <!-- CSS -->
+    <style>
+      .title {
+        color: blue;
+      }
+      table tr td {
+        padding: 5px;
+        text-align: center;
+      }
+      #table-form {
+        border: 1px solid salmon;
+        margin-bottom: 20px;
+      }
+      #table-result {
+        font-weight: bold;
+      }
+    </style>
+  </head>
+
+  <!-- HTML & FORM -->
+  <body>
+    <h1 class="title">PENDAFTARAN</h1>
+
+    <form id="form">
+      <table border="1" rules="all" id="table-form">
+        <tr>
+          <td>Username :</td>
+          <td><input type="text" name="username" /></td>
+        </tr>
+        <tr>
+          <td>First Name :</td>
+          <td><input type="text" name="firstname" /></td>
+        </tr>
+        <tr>
+          <td>Last Name :</td>
+          <td><input type="text" name="lastname" /></td>
+        </tr>
+        <tr>
+          <td>Gender :</td>
+          <td>
+            <div>
+              <input type="radio" name="gender" value="male" id="male" />
+              <label for="male">Male</label>
+            </div>
+            <div>
+              <input type="radio" name="gender" value="female" id="female" />
+              <label for="female">Female</label>
+            </div>
+            <div>
+              <input type="radio" name="gender" value="other" id="other" />
+              <label for="other">Other</label>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>Password :</td>
+          <td><input type="password" name="password" /></td>
+        </tr>
+        <tr>
+          <td>Retype Password :</td>
+          <td><input type="password" name="retypePassword" /></td>
+        </tr>
+        <tr>
+          <td>Age :</td>
+          <td><input type="number" min="0" name="age" /></td>
+        </tr>
+        <tr>
+          <td colspan="2"><button type="submit">Save</button></td>
+        </tr>
+      </table>
+    </form>
+
+    <table border="1" rules="all" id="table-result" height="50">
+      <tbody>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- JS -->
+    <script>
+      const formElement = document.querySelector('#form');
+
+      formElement.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const formData = new FormData(formElement);
+        const username = formData.get('username');
+        const firstname = formData.get('firstname');
+        const lastname = formData.get('lastname');
+        const password = formData.get('password');
+        const retypePassword = formData.get('retypePassword');
+        const age = formData.get('age');
+        const gender = formData.get('gender');
+
+        // Validasi username firstname dan lastname
+        if (username === '') {
+          alert('Username cannot be empty');
+        } else if (firstname === '') {
+          alert('First Name cannot be empty');
+        } else if (lastname === '') {
+          alert('Last Name cannot be empty');
+        } else if (!(password.length >= 5)) {
+          alert('Password must be greater than 5 character !');
+        } else if (password != retypePassword) {
+          alert('Retype Password dont match !');
+        } else if (!(age >= 17)) {
+          alert('Age must be at least 17 years old');
+        } else {
+          const bodyTable = document.querySelector('#table-result > tbody');
+          const rowTableResultEl = bodyTable.children;
+
+          if (rowTableResultEl[0].children[0].innerText === '') {
+            const headTable = rowTableResultEl[0];
+            headTable.children[0].innerText = 'Full Name';
+            headTable.children[1].innerText = 'Gender';
+            headTable.children[2].innerText = 'Age';
+
+            const bodyTable = rowTableResultEl[1];
+            bodyTable.children[0].innerText = `${firstname} ${lastname}`;
+            bodyTable.children[1].innerText = gender;
+            bodyTable.children[2].innerText = `${age} years old`;
+          } else {
+            const newRowTable = document.createElement('tr');
+            newRowTable.innerHTML = `
+                    <td>${firstname} ${lastname}</td>
+                    <td>${gender}</td>
+                    <td>${age} years old</td>
+            `;
+            bodyTable.appendChild(newRowTable);
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
